@@ -31,3 +31,11 @@ jobs:
 
       - name: Publish docker image
         run: docker push ghcr.io/mohammad-husaini/express-docker:${{steps.image_version.outputs.gitsha}}
+      - name: configure docker host
+        uses: khaledez/configure-docker-host@v1
+        with:
+          host: 3.8.162.84
+          user: github
+          ssh-private-key: ${{ secrets.DEPLOYMENT_KEY }}
+      - name: deploy
+        run: docker compose -f docker-compose-prod.yml up -d
